@@ -1,0 +1,8 @@
+{
+	"xlsxname" : "APBD2013.xlsx",
+	"rowcount" : 2000,
+	"offset" : 2,
+	"dbhost" : "127.0.0.1:27017",
+	"dbname" : "test",
+	"collections" : "apbd"
+}
