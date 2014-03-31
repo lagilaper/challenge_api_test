@@ -5,7 +5,7 @@ var config = require('../config.json');
 
 var dataPath = './data/' + config.xlsxname;
 
-function insertingData(range, offset, keyJSON, sheet, counter, max) {
+function insertingData(range, offset, keyJSON, sheet, counter, max, callback) {
   var data;
   if(counter < max){
     data = xlsxParser.getRows(range, offset, keyJSON, sheet);
@@ -18,15 +18,11 @@ function insertingData(range, offset, keyJSON, sheet, counter, max) {
         console.log('success : ', result[0]);
       }
     });
-
-    console.log('range.startRow : ' + range.startRow);
-    console.log('sheetRow : ' + max);
-    console.log(data);
     range.startRow = range.startRow + 1;
-    insertingData(range, offset, keyJSON, sheet, counter+1, max);
+    insertingData(range, offset, keyJSON, sheet, counter+1, max, callback);
   }
   else {
-    return;
+    callback();
   }
 }
 
@@ -39,7 +35,7 @@ exports.xlsx = function(req, res){
     sheet = workbook.Sheets[sheetName];
 
     if(!sheet || !sheet["!ref"]) 
-      return res.send('sheet');
+      return res.send('sheet error');
     range = xlsx.utils.decode_range(sheet["!ref"]);
     
     var startRow = range.s.r;
@@ -60,8 +56,9 @@ exports.xlsx = function(req, res){
 
     var keyJSON = xlsxParser.getHeader(sheetRange, config.offset, sheet);
     sheetRange.startRow = sheetRange.startRow + 1;
-    insertingData(sheetRange, config.offset, keyJSON, sheet, counter, maxrow);
+    insertingData(sheetRange, config.offset, keyJSON, sheet, counter, maxrow, function(){
+      return res.send('insertion completed');
+    });
     return true;
   });
-  res.send('Still Inserting to Mongo in Background');
 }
