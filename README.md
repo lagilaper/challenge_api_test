@@ -6,7 +6,7 @@ Notes :
 
 xlsx file must be located in folder data.
 
-You can get insert data from xlsx to MongoDB by calling 'http://localhost:3000/xlsx/2000' for 2000 rows. If the data started from X row, then you should call 'http://localhost:3000/xlsx/200X' to get 2000 data.
+You can get insert data from xlsx to MongoDB by calling 'http://localhost:3000/xlsx/2000' for 2000 rows. If the data started from X row, then you should call 'http://localhost:3000/xlsx/200X' to get 2000 data. There will be only insert data process, the data won't be checked whether it already exist in DB.
 
 You can change the configuration for mongoDB and xlsx file in config.json file.
 
